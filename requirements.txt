@@ -1,0 +1,27 @@
+# FastAPI
+fastapi
+uvicorn[standard]
+
+# Database
+sqlalchemy>=2.0
+psycopg2-binary
+
+# Validation
+pydantic>=2.0
+pydantic-settings
+email-validator
+
+# Security
+bcrypt==4.0.1
+passlib[bcrypt]==1.7.4
+python-jose[cryptography]
+python-multipart
+
+# Utilities
+python-dotenv
+httpx
+
+# Testing
+pytest
+pytest-asyncio
+pytest-cov

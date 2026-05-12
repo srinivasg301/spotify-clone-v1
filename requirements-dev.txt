@@ -1,0 +1,9 @@
+pytest>=8.0
+pytest-asyncio>=0.23
+pytest-cov>=5.0
+pytest-randomly>=3.15
+factory-boy>=3.3
+Faker>=25.0
+freezegun>=1.4
+respx>=0.20
+eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJzcmluaXZhcyIsInVzZXJfaWQiOjEsInJvbGUiOiJhZG1pbiIsInR5cGUiOiJhY2Nlc3MiLCJleHAiOjE3Nzg1NzkyMTF9.d_V6LKYRY_sCkHQbmbYGE3_LXQfyFhUTViDjpW30s9A
