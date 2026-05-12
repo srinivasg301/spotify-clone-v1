@@ -3,9 +3,12 @@ from typing import Generator
 
 from sqlalchemy import Column, DateTime, String, create_engine
 from sqlalchemy.orm import DeclarativeBase, Session, sessionmaker
+from fastapi import HTTPException
 
 from app.core.config import settings
+from app.core.logger import get_logger
 
+logger = get_logger(__name__)
 
 # Database engine
 engine = create_engine(settings.database_url, echo=settings.debug)
@@ -32,5 +35,10 @@ def get_db() -> Generator[Session, None, None]:
     db = SessionLocal()
     try:
         yield db
+    except HTTPException:
+        raise
+    except Exception as e:
+        logger.error("Database session error: %s", str(e))
+        raise
     finally:
         db.close()

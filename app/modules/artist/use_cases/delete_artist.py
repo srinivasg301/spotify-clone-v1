@@ -1,5 +1,8 @@
 from app.core.exceptions import NotFoundException
 from app.modules.artist.repository import ArtistRepository
+from app.core.logger import get_logger
+
+logger = get_logger(__name__)
 
 
 class DeleteArtistUseCase:
@@ -23,3 +26,4 @@ class DeleteArtistUseCase:
             raise NotFoundException(f"Artist with id {artist_id} not found")
         
         self.artist_repo.delete(artist)
+        logger.info("Artist deleted: id=%s", artist_id)

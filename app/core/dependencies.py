@@ -6,6 +6,9 @@ from pydantic import BaseModel
 
 from app.core.exceptions import ForbiddenException, UnauthorizedException
 from app.core.security import decode_token
+from app.core.logger import get_logger
+
+logger = get_logger(__name__)
 
 
 bearer_scheme = HTTPBearer(auto_error=False)
@@ -23,13 +26,13 @@ def get_current_user(
 ) -> UserContext:
     """Extract user from JWT token"""
     if not credentials:
+        logger.warning("Request with no credentials")
         raise UnauthorizedException("Not authenticated")
 
-    # Decode JWT token (no HTTP call needed - same service!)
     payload = decode_token(credentials.credentials)
     
-    # Validate token type
     if payload.get("type") != "access":
+        logger.warning("Invalid token type: %s", payload.get("type"))
         raise UnauthorizedException("Invalid token type")
     
     return UserContext(
@@ -42,5 +45,6 @@ def get_current_user(
 def require_admin(user: UserContext = Depends(get_current_user)) -> UserContext:
     """Require admin role"""
     if user.role != "admin":
+        logger.warning("Admin access denied for user: %s", user.username)
         raise ForbiddenException("Admin access required")
     return user

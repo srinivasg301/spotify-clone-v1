@@ -1,5 +1,8 @@
 from app.core.exceptions import NotFoundException
 from app.modules.song.repository import SongRepository
+from app.core.logger import get_logger
+
+logger = get_logger(__name__)
 
 
 class DeleteSongUseCase:
@@ -23,3 +26,4 @@ class DeleteSongUseCase:
             raise NotFoundException(f"Song with id {song_id} not found")
         
         self.song_repo.delete(song)
+        logger.info("Song deleted: id=%s", song_id)

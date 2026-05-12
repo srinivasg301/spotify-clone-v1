@@ -4,6 +4,9 @@ from app.core.exceptions import UnauthorizedException
 from app.core.security import create_access_token, create_refresh_token, decode_token
 from app.modules.auth.repository import RefreshTokenRepository, UserRepository
 from app.modules.auth.schemas import TokenResponse
+from app.core.logger import get_logger
+
+logger = get_logger(__name__)
 
 
 class RefreshTokenUseCase:
@@ -61,7 +64,7 @@ class RefreshTokenUseCase:
         
         # Store new refresh token
         self.token_repo.create_token(user.id, new_jti, new_expires_at)
-        
+        logger.info("Token refreshed for user_id=%s", user_id)
         return TokenResponse(
             access_token=access_token,
             refresh_token=new_refresh_token

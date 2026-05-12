@@ -3,6 +3,9 @@ from app.core.security import hash_password
 from app.modules.auth.models import User
 from app.modules.auth.repository import UserRepository
 from app.modules.auth.schemas import RegisterRequest
+from app.core.logger import get_logger
+
+logger = get_logger(__name__)
 
 
 class RegisterUserUseCase:
@@ -42,5 +45,5 @@ class RegisterUserUseCase:
             hashed_password=hashed_password,
             role=request.role
         )
-        
+        logger.info("User registered: username=%s, role=%s", user.username, user.role)
         return user

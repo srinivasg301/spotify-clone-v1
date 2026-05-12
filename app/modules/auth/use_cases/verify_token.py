@@ -2,6 +2,9 @@ from app.core.exceptions import UnauthorizedException
 from app.core.security import decode_token
 from app.modules.auth.repository import UserRepository
 from app.modules.auth.schemas import VerifyTokenResponse
+from app.core.logger import get_logger
+
+logger = get_logger(__name__)
 
 
 class VerifyTokenUseCase:
@@ -35,6 +38,7 @@ class VerifyTokenUseCase:
         if not user:
             raise UnauthorizedException("User not found")
         
+        logger.info("Token verified for user_id=%s", user.id)
         return VerifyTokenResponse(
             user_id=user.id,
             username=user.username,

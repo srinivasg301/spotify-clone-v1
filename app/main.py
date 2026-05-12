@@ -1,11 +1,14 @@
-from fastapi import FastAPI
+from fastapi import FastAPI, Request
 from fastapi.middleware.cors import CORSMiddleware
 
 from app.core.config import settings
 from app.core.database import Base, engine
+from app.core.logger import get_logger
 from app.modules.auth.router import router as auth_router
 from app.modules.artist.router import router as artist_router
 from app.modules.song.router import router as song_router
+
+logger = get_logger(__name__)
 
 # Create database tables
 Base.metadata.create_all(bind=engine)
@@ -27,6 +30,14 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
+
+@app.middleware("http")
+async def log_requests(request: Request, call_next):
+    logger.info("%s %s", request.method, request.url.path)
+    response = await call_next(request)
+    logger.info("%s %s -> %s", request.method, request.url.path, response.status_code)
+    return response
 
 # Register routers with /api/v1 prefix
 app.include_router(auth_router, prefix="/api/v1/auth", tags=["auth"])

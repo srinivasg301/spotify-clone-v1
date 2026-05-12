@@ -3,6 +3,9 @@ from typing import List
 from app.core.exceptions import NotFoundException
 from app.modules.song.models import Song
 from app.modules.song.repository import SongRepository
+from app.core.logger import get_logger
+
+logger = get_logger(__name__)
 
 
 class SearchSongsUseCase:
@@ -29,4 +32,5 @@ class SearchSongsUseCase:
         songs = self.song_repo.search_by_title(title, limit=limit, offset=offset)
         if not songs:
             raise NotFoundException(f"No songs found matching '{title}'")
+        logger.info("Song search: query='%s', results=%s", title, len(songs))
         return songs

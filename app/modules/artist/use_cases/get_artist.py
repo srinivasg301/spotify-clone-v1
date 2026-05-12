@@ -1,6 +1,9 @@
 from app.core.exceptions import NotFoundException
 from app.modules.artist.models import Artist
 from app.modules.artist.repository import ArtistRepository
+from app.core.logger import get_logger
+
+logger = get_logger(__name__)
 
 
 class GetArtistUseCase:
@@ -25,4 +28,5 @@ class GetArtistUseCase:
         artist = self.artist_repo.get_by_id(artist_id)
         if not artist:
             raise NotFoundException(f"Artist with id {artist_id} not found")
+        logger.info("Artist fetched: id=%s", artist_id)
         return artist

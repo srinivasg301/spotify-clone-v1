@@ -1,6 +1,9 @@
 from app.core.exceptions import NotFoundException
 from app.modules.song.repository import SongRepository
 from app.modules.song.schemas import SongStreamResponse
+from app.core.logger import get_logger
+
+logger = get_logger(__name__)
 
 
 class StreamSongUseCase:
@@ -28,7 +31,7 @@ class StreamSongUseCase:
         
         # Generate stream URL (in production, this would be a CDN URL)
         stream_url = f"https://cdn.spotify-clone.com/stream/{song.id}"
-        
+        logger.info("Stream URL generated: song_id=%s", song_id)
         return SongStreamResponse(
             id=song.id,
             title=song.title,

@@ -3,6 +3,9 @@ from typing import List
 from app.core.exceptions import NotFoundException
 from app.modules.artist.models import Artist
 from app.modules.artist.repository import ArtistRepository
+from app.core.logger import get_logger
+
+logger = get_logger(__name__)
 
 
 class SearchArtistsUseCase:
@@ -29,4 +32,5 @@ class SearchArtistsUseCase:
         artists = self.artist_repo.search_by_name(name, limit=limit, offset=offset)
         if not artists:
             raise NotFoundException(f"No artists found matching '{name}'")
+        logger.info("Artist search: query='%s', results=%s", name, len(artists))
         return artists

@@ -4,6 +4,9 @@ from app.core.exceptions import NotFoundException
 from app.modules.artist.models import Artist
 from app.modules.artist.repository import ArtistRepository
 from app.modules.artist.schemas import UpdateArtistRequest
+from app.core.logger import get_logger
+
+logger = get_logger(__name__)
 
 
 class UpdateArtistUseCase:
@@ -41,4 +44,5 @@ class UpdateArtistUseCase:
             name=request.name,
             updated_by=updated_by
         )
+        logger.info("Artist updated: id=%s, by=%s", artist_id, updated_by)
         return updated_artist

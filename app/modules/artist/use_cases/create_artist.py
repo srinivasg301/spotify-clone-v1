@@ -3,6 +3,9 @@ from typing import Optional
 from app.modules.artist.models import Artist
 from app.modules.artist.repository import ArtistRepository
 from app.modules.artist.schemas import CreateArtistRequest
+from app.core.logger import get_logger
+
+logger = get_logger(__name__)
 
 
 class CreateArtistUseCase:
@@ -27,4 +30,5 @@ class CreateArtistUseCase:
             created_by=created_by,
             updated_by=created_by
         )
+        logger.info("Artist created: id=%s, name=%s, by=%s", artist.id, artist.name, created_by)
         return artist

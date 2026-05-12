@@ -5,6 +5,9 @@ from app.modules.artist.repository import ArtistRepository
 from app.modules.song.models import Song
 from app.modules.song.repository import SongRepository
 from app.modules.song.schemas import UpdateSongRequest
+from app.core.logger import get_logger
+
+logger = get_logger(__name__)
 
 
 class UpdateSongUseCase:
@@ -55,4 +58,5 @@ class UpdateSongUseCase:
             thumbnail_url=str(request.thumbnail_url) if request.thumbnail_url else None,
             updated_by=updated_by
         )
+        logger.info("Song updated: id=%s, by=%s", song_id, updated_by)
         return updated_song

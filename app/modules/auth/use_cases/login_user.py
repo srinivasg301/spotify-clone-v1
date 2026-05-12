@@ -2,6 +2,9 @@ from app.core.exceptions import UnauthorizedException
 from app.core.security import create_access_token, create_refresh_token, verify_password
 from app.modules.auth.repository import RefreshTokenRepository, UserRepository
 from app.modules.auth.schemas import TokenResponse
+from app.core.logger import get_logger
+
+logger = get_logger(__name__)
 
 
 class LoginUserUseCase:
@@ -30,6 +33,7 @@ class LoginUserUseCase:
         
         # Verify credentials
         if not user or not verify_password(password, user.hashed_password):
+            logger.warning("Login failed for username: %s", username)
             raise UnauthorizedException("Invalid credentials")
         
         # Create access token
@@ -40,7 +44,7 @@ class LoginUserUseCase:
         
         # Store refresh token in database
         self.token_repo.create_token(user.id, jti, expires_at)
-        
+        logger.info("User logged in: username=%s", username)
         return TokenResponse(
             access_token=access_token,
             refresh_token=refresh_token

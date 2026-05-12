@@ -2,6 +2,9 @@ from typing import List
 
 from app.core.exceptions import NotFoundException
 from app.modules.artist.repository import ArtistRepository
+from app.core.logger import get_logger
+
+logger = get_logger(__name__)
 
 
 class GetArtistSongsUseCase:
@@ -34,5 +37,5 @@ class GetArtistSongsUseCase:
         songs = self.artist_repo.get_artist_songs(artist_id, limit=limit, offset=offset)
         if not songs:
             raise NotFoundException(f"No songs found for artist '{artist.name}'")
-        
+        logger.info("Artist songs fetched: artist_id=%s, count=%s", artist_id, len(songs))
         return songs

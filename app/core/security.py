@@ -7,6 +7,9 @@ from passlib.context import CryptContext
 
 from app.core.config import settings
 from app.core.exceptions import UnauthorizedException
+from app.core.logger import get_logger
+
+logger = get_logger(__name__)
 
 
 # Password hashing context
@@ -59,5 +62,6 @@ def decode_token(token: str) -> dict:
     try:
         payload = jwt.decode(token, settings.secret_key, algorithms=[settings.algorithm])
         return payload
-    except JWTError:
+    except JWTError as e:
+        logger.warning("JWT decode failed: %s", str(e))
         raise UnauthorizedException("Invalid token")

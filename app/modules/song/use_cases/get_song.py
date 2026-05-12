@@ -1,6 +1,9 @@
 from app.core.exceptions import NotFoundException
 from app.modules.song.models import Song
 from app.modules.song.repository import SongRepository
+from app.core.logger import get_logger
+
+logger = get_logger(__name__)
 
 
 class GetSongUseCase:
@@ -25,4 +28,5 @@ class GetSongUseCase:
         song = self.song_repo.get_by_id(song_id)
         if not song:
             raise NotFoundException(f"Song with id {song_id} not found")
+        logger.info("Song fetched: id=%s", song_id)
         return song
